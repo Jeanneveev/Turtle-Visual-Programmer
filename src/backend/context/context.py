@@ -37,7 +37,7 @@ class Simulation(IContext):
     direction: Direction = Direction.UP
 
     def _move_up(self):
-        """Move the turtle up and update its location dependent on the direction it's facing"""
+        """Move the turtle forwards and update its location dependent on the direction it's facing"""
         # print(f"Moving forwards")
         match self.direction:
             case Direction.UP:
@@ -56,7 +56,7 @@ class Simulation(IContext):
                 raise ValueError(f"Turtle direction \"{self.direction}\" not found")
             
     def _move_down(self):
-        """Move the turtle down and update its location dependent on the direction it's facing"""
+        """Move the turtle backwards and update its location dependent on the direction it's facing"""
         match self.direction:
             case Direction.UP:
                 self.y -= 1
@@ -68,6 +68,20 @@ class Simulation(IContext):
                 self.x -= 1
             case _:
                 raise ValueError(f"Turtle direction \"{self.direction}\" not found")
+            
+    def _move_left(self):
+        """Move the turtle leftwards and update its location dependent on the direction it's facing"""
+        match self.direction:
+            case Direction.UP:
+                self.x -= 1
+            case Direction.DOWN:
+                self.x += 1
+            case Direction.LEFT:
+                self.y -= 1
+            case Direction.RIGHT:
+                self.y += 1
+            case _:
+                raise ValueError(f"Turtle direction \"{self.direction}\" not found")
 
     def move(self, direction:Direction):
         match direction:
@@ -75,5 +89,7 @@ class Simulation(IContext):
                 self._move_up()
             case Direction.DOWN:
                 self._move_down()
+            case Direction.LEFT:
+                self._move_left()
             case _:
                 raise ValueError(f"Movement direction \"{direction}\" not found")
