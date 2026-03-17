@@ -31,11 +31,13 @@ class IContext(ABC):
 
 @dataclass(frozen=False)
 class Simulation(IContext):
+    """The contextual data and commands of the turtle as a virtual simulation"""
     x: int = 0
     y: int = 0
     direction: Direction = Direction.UP
 
     def _move_up(self):
+        """Move the turtle up and update its location dependent on the direction it's facing"""
         # print(f"Moving forwards")
         match self.direction:
             case Direction.UP:
@@ -51,11 +53,27 @@ class Simulation(IContext):
                 # print("Facing right")
                 self.x += 1
             case _:
-                raise ValueError("Turtle direction not found")
+                raise ValueError(f"Turtle direction \"{self.direction}\" not found")
+            
+    def _move_down(self):
+        """Move the turtle down and update its location dependent on the direction it's facing"""
+        match self.direction:
+            case Direction.UP:
+                self.y -= 1
+            case Direction.DOWN:
+                self.y += 1
+            case Direction.LEFT:
+                self.x += 1
+            case Direction.RIGHT:
+                self.x -= 1
+            case _:
+                raise ValueError(f"Turtle direction \"{self.direction}\" not found")
 
     def move(self, direction:Direction):
         match direction:
             case Direction.UP:
                 self._move_up()
+            case Direction.DOWN:
+                self._move_down()
             case _:
-                raise ValueError("Movement direction not found")
+                raise ValueError(f"Movement direction \"{direction}\" not found")

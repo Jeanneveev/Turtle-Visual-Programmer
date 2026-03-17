@@ -62,24 +62,145 @@ class TestContextMove(unittest.TestCase):
         with self.assertRaises(ValueError) as err:
             context.move(Direction.UP)
 
-        self.assertEqual("Turtle direction not found", str(err.exception))
+        self.assertEqual("Turtle direction \"None\" not found", str(err.exception))
 
-    # def test_can_move_down_facing_up(self):
-    #     context = init_context()
-    #     context.y = 5
+    def test_can_move_down_facing_up(self):
+        context = init_context()
+        context.y = 5
 
-    #     context.move(Direction.DOWN)
-    #     self.assertEqual(0, context.x)
-    #     self.assertEqual(4, context.y)
+        context.move(Direction.DOWN)
 
-    # def test_can_move_down_contextually(self):
-    #     ...
+        self.assertEqual(0, context.x)
+        self.assertEqual(4, context.y)
+
+    def test_can_move_down_facing_down(self):
+        context = init_context()
+        context.direction = Direction.DOWN
+        context.y = 7
+
+        context.move(Direction.DOWN)
+
+        self.assertEqual(0, context.x)
+        self.assertEqual(8, context.y)
     
-    # def test_can_move_left_contextually(self):
+    def test_can_move_down_facing_left(self):
+        context = init_context()
+        context.direction = Direction.LEFT
+        context.x = 3
+        context.y = 8
+        
+        context.move(Direction.DOWN)
+
+        self.assertEqual(4, context.x)
+        self.assertEqual(8, context.y)
+
+    def test_can_move_down_facing_right(self):
+        context = init_context()
+        context.direction = Direction.RIGHT
+        context.x = 4
+        context.y = 9
+        
+        context.move(Direction.DOWN)
+
+        self.assertEqual(3, context.x)
+        self.assertEqual(9, context.y)
+
+    def test_cannot_move_down_facing_unknown_direction(self):
+        context = init_context()
+        context.direction = None
+        
+        with self.assertRaises(ValueError) as err:
+            context.move(Direction.DOWN)
+
+        self.assertEqual("Turtle direction \"None\" not found", str(err.exception))
+    
+    # def test_can_move_left_facing_up(self):
     #     ...
 
-    # def test_can_move_right_contextually(self):
+    # def test_can_move_left_facing_down(self):
+    #     context = init_context()
+    #     context.direction = Direction.DOWN
+    #     context.y = 7
+
+    #     context.move(Direction.UP)
+
+    #     self.assertEqual(0, context.x)
+    #     self.assertEqual(6, context.y)
+    
+    # def test_can_move_left_facing_left(self):
+    #     context = init_context()
+    #     context.direction = Direction.LEFT
+    #     context.x = 3
+    #     context.y = 8
+        
+    #     context.move(Direction.UP)
+
+    #     self.assertEqual(2, context.x)
+    #     self.assertEqual(8, context.y)
+
+    # def test_can_move_left_facing_right(self):
+    #     context = init_context()
+    #     context.direction = Direction.RIGHT
+    #     context.x = 4
+    #     context.y = 9
+        
+    #     context.move(Direction.UP)
+
+    #     self.assertEqual(5, context.x)
+    #     self.assertEqual(9, context.y)
+
+    # def test_cannot_move_left_facing_unknown_direction(self):
+    #     context = init_context()
+    #     context.direction = None
+        
+    #     with self.assertRaises(ValueError) as err:
+    #         context.move(Direction.UP)
+
+    #     self.assertEqual("Turtle direction \"None\" not found", str(err.exception))
+
+    # def test_can_move_right_facing_up(self):
     #     ...
+
+    # def test_can_move_right_facing_down(self):
+    #     context = init_context()
+    #     context.direction = Direction.DOWN
+    #     context.y = 7
+
+    #     context.move(Direction.UP)
+
+    #     self.assertEqual(0, context.x)
+    #     self.assertEqual(6, context.y)
+    
+    # def test_can_move_right_facing_left(self):
+    #     context = init_context()
+    #     context.direction = Direction.LEFT
+    #     context.x = 3
+    #     context.y = 8
+        
+    #     context.move(Direction.UP)
+
+    #     self.assertEqual(2, context.x)
+    #     self.assertEqual(8, context.y)
+
+    # def test_can_move_right_facing_right(self):
+    #     context = init_context()
+    #     context.direction = Direction.RIGHT
+    #     context.x = 4
+    #     context.y = 9
+        
+    #     context.move(Direction.UP)
+
+    #     self.assertEqual(5, context.x)
+    #     self.assertEqual(9, context.y)
+
+    # def test_cannot_move_right_facing_unknown_direction(self):
+    #     context = init_context()
+    #     context.direction = None
+        
+    #     with self.assertRaises(ValueError) as err:
+    #         context.move(Direction.UP)
+
+    #     self.assertEqual("Turtle direction \"None\" not found", str(err.exception))
 
     def test_cannot_move_in_unknown_direction(self):
         context = init_context()
@@ -87,7 +208,7 @@ class TestContextMove(unittest.TestCase):
         with self.assertRaises(ValueError) as err:
             context.move(None)
 
-        self.assertEqual("Movement direction not found", str(err.exception))
+        self.assertEqual("Movement direction \"None\" not found", str(err.exception))
 
 if __name__ == "__main__":
     unittest.main()
