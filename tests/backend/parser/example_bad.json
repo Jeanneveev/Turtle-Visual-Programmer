@@ -1,0 +1,10 @@
+[
+    {
+        "type": "move",
+        "direction": "up"
+    },
+    {
+        "type": "unknown",
+        "direction": "up"
+    }
+]

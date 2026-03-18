@@ -1,0 +1,18 @@
+[
+    {
+        "type": "move",
+        "direction": "up"
+    },
+    {
+        "type": "move",
+        "direction": "up"
+    },
+    {
+        "type": "rotate",
+        "direction": "right"
+    },
+    {
+        "type": "move",
+        "direction": "up"
+    }
+]

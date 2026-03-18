@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from src.backend.lib.utils import Direction
+from src.backend.utils.utils import Direction
 
 def init_context():
     return Simulation()

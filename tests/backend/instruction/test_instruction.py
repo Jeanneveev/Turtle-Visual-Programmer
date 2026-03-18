@@ -1,7 +1,7 @@
 import unittest
 from src.backend.action.action import Move, Rotate
 from src.backend.instruction.instruction import IInstruction, MoveInstruction, RotateInstruction, BlockInstruction
-from src.backend.lib.utils import Direction
+from src.backend.utils.utils import Direction
 
 # HELPERS
 class MockInstruction(IInstruction):

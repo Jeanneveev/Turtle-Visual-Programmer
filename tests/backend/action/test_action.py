@@ -1,7 +1,7 @@
 import unittest
 from src.backend.action.action import IAction, Move, Rotate
 from src.backend.context.context import init_context
-from src.backend.lib.utils import Direction
+from src.backend.utils.utils import Direction
 
 # HELPERS
 class MockAction(IAction):
