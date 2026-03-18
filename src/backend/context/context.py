@@ -29,6 +29,10 @@ class IContext(ABC):
     def move(self, direction:Direction):
         pass
 
+    @abstractmethod
+    def rotate(self, direction:Direction):
+        pass
+
 @dataclass(frozen=False)
 class Simulation(IContext):
     """The contextual data and commands of the turtle as a virtual simulation"""
@@ -53,7 +57,7 @@ class Simulation(IContext):
                 # print("Facing right")
                 self.x += 1
             case _:
-                raise ValueError(f"Turtle direction \"{self.direction}\" not found")
+                raise ValueError(f"Invalid turtle direction: \"{self.direction}\"")
             
     def _move_down(self):
         """Move the turtle backwards and update its location dependent on the direction it's facing"""
@@ -67,7 +71,7 @@ class Simulation(IContext):
             case Direction.RIGHT:
                 self.x -= 1
             case _:
-                raise ValueError(f"Turtle direction \"{self.direction}\" not found")
+                raise ValueError(f"Invalid turtle direction: \"{self.direction}\"")
             
     def _move_left(self):
         """Move the turtle leftwards and update its location dependent on the direction it's facing"""
@@ -81,7 +85,7 @@ class Simulation(IContext):
             case Direction.RIGHT:
                 self.y += 1
             case _:
-                raise ValueError(f"Turtle direction \"{self.direction}\" not found")
+                raise ValueError(f"Invalid turtle direction: \"{self.direction}\"")
             
     def _move_right(self):
         """Move the turtle rightwards and update its location dependent on the direction it's facing"""
@@ -95,9 +99,10 @@ class Simulation(IContext):
             case Direction.RIGHT:
                 self.y -= 1
             case _:
-                raise ValueError(f"Turtle direction \"{self.direction}\" not found")
+                raise ValueError(f"Invalid turtle direction: \"{self.direction}\"")
 
     def move(self, direction:Direction):
+        """Move the turtle in the given direction"""
         match direction:
             case Direction.UP:
                 self._move_up()
@@ -109,3 +114,41 @@ class Simulation(IContext):
                 self._move_right()
             case _:
                 raise ValueError(f"Movement direction \"{direction}\" not found")
+            
+    def _rotate_left(self):
+        """Rotate the turtle counterclockwise"""
+        match self.direction:
+            case Direction.UP:
+                self.direction = Direction.LEFT
+            case Direction.DOWN:
+                self.direction = Direction.RIGHT
+            case Direction.LEFT:
+                self.direction = Direction.DOWN
+            case Direction.RIGHT:
+                self.direction = Direction.UP
+            case _:
+                raise ValueError(f"Invalid turtle direction: \"{self.direction}\"")
+            
+    def _rotate_right(self):
+        """Rotate the turtle clockwise"""
+        match self.direction:
+            case Direction.UP:
+                self.direction = Direction.RIGHT
+            case Direction.DOWN:
+                self.direction = Direction.LEFT
+            case Direction.LEFT:
+                self.direction = Direction.UP
+            case Direction.RIGHT:
+                self.direction = Direction.DOWN
+            case _:
+                raise ValueError(f"Invalid turtle direction: \"{self.direction}\"")
+
+    def rotate(self, direction:Direction):
+        """Rotate the turtle in the given direction"""
+        match direction:
+            case Direction.LEFT:
+                self._rotate_left()
+            case Direction.RIGHT:
+                self._rotate_right()
+            case _:
+                raise ValueError(f"Rotation direction \"{direction}\" not found")
