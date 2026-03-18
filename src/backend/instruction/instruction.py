@@ -15,14 +15,24 @@ class IInstruction(ABC):
     def to_action(self) -> Generator[IAction, None, None]:
         pass
 
+@dataclass(frozen=True)
 class MoveInstruction(IInstruction):
     direction: str
 
     def to_action(self) -> Generator[IAction, None, None]:
         yield Move(Direction(self.direction))
     
+@dataclass(frozen=True)
 class RotateInstruction(IInstruction):
     direction: str
 
     def to_action(self) -> Generator[IAction, None, None]:
         yield Rotate(Direction(self.direction))
+
+@dataclass
+class BlockInstruction():
+    instructions: list[IInstruction]
+
+    def to_actions(self) -> Generator[IAction, None, None]:
+        for instruction in self.instructions:
+            yield from instruction.to_action()

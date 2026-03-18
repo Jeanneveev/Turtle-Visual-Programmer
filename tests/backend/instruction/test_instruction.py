@@ -1,6 +1,6 @@
 import unittest
 from src.backend.action.action import Move, Rotate
-from src.backend.instruction.instruction import IInstruction, MoveInstruction, RotateInstruction
+from src.backend.instruction.instruction import IInstruction, MoveInstruction, RotateInstruction, BlockInstruction
 from src.backend.lib.utils import Direction
 
 # HELPERS
@@ -56,6 +56,20 @@ class TestRotateInstruction(unittest.TestCase):
         self.assertTrue(isinstance(action, Rotate))
         self.assertEqual(Direction.LEFT, action.direction)
 
+class TestBlockInstruction(unittest.TestCase):
+    def test_can_make_block_instruction(self):
+        block = BlockInstruction([])
+        self.assertNotEqual(None, block)
+
+    def test_can_translate_all_instructions_in_block_to_actions(self):
+        block = BlockInstruction([MoveInstruction("up"), MoveInstruction("up"), RotateInstruction("right")])
+
+        actions = list(block.to_actions())
+
+        self.assertEqual(
+            [Move(Direction.UP), Move(Direction.UP), Rotate(Direction.RIGHT)],
+            actions
+        )
 
 if __name__ == "__main__":
     unittest.main()
