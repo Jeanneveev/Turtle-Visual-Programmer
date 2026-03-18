@@ -36,3 +36,19 @@ class Move(IAction):
                 context.move(Direction.RIGHT)
             case Direction.RIGHT:
                 context.move(Direction.LEFT)
+
+@dataclass(frozen=True)
+class Rotate(IAction):
+    direction: Direction
+    
+    def execute(self, context:IContext):
+        context.rotate(self.direction)
+
+    def unexecute(self, context:IContext):
+        """Reverse the rotation by rotating in the opposite direction"""
+        match self.direction:
+            case Direction.LEFT:
+                context.rotate(Direction.RIGHT)
+            case Direction.RIGHT:
+                context.rotate(Direction.LEFT)
+        

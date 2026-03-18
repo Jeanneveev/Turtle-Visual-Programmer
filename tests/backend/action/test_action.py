@@ -1,5 +1,5 @@
 import unittest
-from src.backend.action.action import IAction, Move
+from src.backend.action.action import IAction, Move, Rotate
 from src.backend.context.context import Direction, init_context
 
 class TestMoveAction(unittest.TestCase):
@@ -108,6 +108,48 @@ class TestMoveAction(unittest.TestCase):
         
         move_action.unexecute(context)
         self.assertEqual(2, context.x)
+
+class TestRotateAction(unittest.TestCase):
+    def test_can_make_rotate_action(self):
+        self.assertNotEqual(None, Rotate(Direction.LEFT))
+
+    def test_can_execute_rotate_left(self):
+        context = init_context()
+        rotate_action = Rotate(Direction.LEFT)
+
+        rotate_action.execute(context)
+
+        self.assertEqual(Direction.LEFT, context.direction)
+
+    def test_can_execute_rotate_right(self):
+        context = init_context()
+        rotate_action = Rotate(Direction.RIGHT)
+
+        rotate_action.execute(context)
+
+        self.assertEqual(Direction.RIGHT, context.direction)
+
+    def test_can_unexecute_rotate_left(self):
+        context = init_context()
+        rotate_action = Rotate(Direction.LEFT)
+
+        rotate_action.execute(context)
+        self.assertEqual(Direction.LEFT, context.direction)
+
+        rotate_action.unexecute(context)
+        self.assertEqual(Direction.UP, context.direction)
+        
+
+    def test_can_unexecute_rotate_right(self):
+        context = init_context()
+        rotate_action = Rotate(Direction.RIGHT)
+
+        rotate_action.execute(context)
+        self.assertEqual(Direction.RIGHT, context.direction)
+
+        rotate_action.unexecute(context)
+        self.assertEqual(Direction.UP, context.direction)
+        
 
 if __name__ == "__main__":
     unittest.main()
