@@ -1,5 +1,6 @@
 import unittest
-from src.backend.context.context import init_context, IContext, Direction
+from src.backend.context.context import init_context, IContext
+from src.backend.lib.utils import Direction
 
 class TestContext(unittest.TestCase):
     def test_can_init_context(self):

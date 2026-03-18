@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from src.backend.context.context import IContext, Direction
+from src.backend.context.context import IContext
+from src.backend.lib.utils import Direction
 
 @dataclass(frozen=True)
 class IAction(ABC):
@@ -40,6 +41,11 @@ class Move(IAction):
 @dataclass(frozen=True)
 class Rotate(IAction):
     direction: Direction
+
+    def __post_init__(self):
+        super().__post_init__()
+        if self.direction not in [Direction.RIGHT, Direction.LEFT]:
+            raise ValueError("Can only rotate left or right")
     
     def execute(self, context:IContext):
         context.rotate(self.direction)

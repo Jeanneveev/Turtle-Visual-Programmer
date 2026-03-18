@@ -1,26 +1,37 @@
 import unittest
 from src.backend.action.action import IAction, Move, Rotate
-from src.backend.context.context import Direction, init_context
+from src.backend.context.context import init_context
+from src.backend.lib.utils import Direction
+
+# HELPERS
+class MockAction(IAction):
+    direction: Direction
+    def execute(self, context):
+        return None
+    def unexecute(self, context):
+        return None
+
+# TESTS
+class TestAction(unittest.TestCase):        
+    def test_must_init_action_with_direction(self):
+        with self.assertRaises(TypeError) as err:
+            MockAction()
+        
+        self.assertEqual(
+            "IAction.__init__() missing 1 required positional argument: 'direction'",
+            str(err.exception)
+        )
+
+    def test_action_direction_must_be_of_type_direction(self):
+        with self.assertRaises(TypeError) as err:
+            MockAction("up")
+        
+        self.assertEqual(
+            "MockAction.direction must be of type Direction",
+            str(err.exception)
+        )
 
 class TestMoveAction(unittest.TestCase):
-    def test_must_init_move_with_direction(self):
-        with self.assertRaises(TypeError) as err:
-            Move()
-        
-        self.assertEqual(
-            "Move.__init__() missing 1 required positional argument: 'direction'",
-            str(err.exception)
-        )
-
-    def test_move_direction_must_be_direction_type(self):
-        with self.assertRaises(TypeError) as err:
-            Move("up")
-        
-        self.assertEqual(
-            "Move.direction must be of type Direction",
-            str(err.exception)
-        )
-
     def test_can_make_move_action(self):
         action = Move(Direction.UP)
         self.assertNotEqual(None, action)
@@ -112,6 +123,12 @@ class TestMoveAction(unittest.TestCase):
 class TestRotateAction(unittest.TestCase):
     def test_can_make_rotate_action(self):
         self.assertNotEqual(None, Rotate(Direction.LEFT))
+
+    def test_can_only_rotate_left_or_right(self):
+        with self.assertRaises(ValueError) as err:
+            Rotate(Direction.UP)
+        
+        self.assertEqual("Can only rotate left or right", str(err.exception))
 
     def test_can_execute_rotate_left(self):
         context = init_context()
