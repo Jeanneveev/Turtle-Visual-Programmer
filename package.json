@@ -1,0 +1,21 @@
+{
+  "name": "turtle_visual_programmer",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "main.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@dnd-kit/dom": "^0.3.2",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0",
+    "jest": "^30.3.0"
+  }
+}

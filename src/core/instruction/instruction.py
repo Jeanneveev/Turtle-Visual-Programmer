@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Generator
-from src.backend.action.action import IAction, Move, Rotate
-from src.backend.utils.utils import Direction
+from src.core.action.action import IAction, Move, Rotate
+from src.core.utils.utils import Direction
 
 @dataclass(frozen=True)
 class IInstruction(ABC):
