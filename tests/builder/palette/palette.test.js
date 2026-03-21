@@ -1,5 +1,5 @@
 const { test, expect, describe } = require("@jest/globals")
-const { InstructionSlot, Instruction, get_valid_directions, get_invalid_directions } = require("../../../src/builder/palette/palette.js")
+const { InstructionSlot, Instruction, Workspace, WorkspaceController, get_valid_directions, get_invalid_directions } = require("../../../src/builder/palette/palette.js")
 
 describe("InstructionSlot", () => {
     test("Can create InstructionSlot", () => {
@@ -122,96 +122,112 @@ describe("Instruction", () => {
     });
 });
 
-// describe("Workspace", () => {
-//     test("Can create Workspace object", () => {
-//         const workspace = new Workspace();
+describe("Workspace", () => {
+    test("Can create Workspace object", () => {
+        const workspace = new Workspace();
 
-//         expect(workspace).toHaveProperty("blocks");
-//     });
+        expect(workspace).toHaveProperty("slots");
+    });
 
-//     test("Can create Workspace with no blocks", () => {
-//         const workspace = new Workspace();
+    test("Workspace initializes with one slot", () => {
+        const workspace = new Workspace();
+        const slot = new InstructionSlot();
 
-//         expect(workspace.blocks).toEqual([]);
-//     });
+        expect(workspace.slots).toEqual([slot]);
+    });
 
-//     test("Can create Workspace with blocks", () => {
-//         const block_1 = new Instruction("move", "up");
-//         const block_2 = new Instruction("rotate", "right");
-//         const workspace = new Workspace([block_1, block_2]);
+    test("Can get curr_slot property", () => {
+        const workspace = new Workspace();
+        workspace.slots[0].type = "move";
+        workspace.slots[0].direction = "up";
 
-//         expect(workspace.blocks).toEqual([block_1, block_2]);
-//     });
+        const slot = new InstructionSlot();
+        slot.type = "move";
+        slot.direction = "up";
 
-//     test("Can convert Workspace to JSON", () => {
-//         const block_1 = new Instruction("move", "up");
-//         const block_2 = new Instruction("rotate", "left");
-//         const workspace = new Workspace([block_1, block_2]);
+        expect(workspace.curr_slot).toEqual(slot);
+    });
 
-//         expect(workspace.to_json()).toEqual([
-//             {"type": "move", "direction": "up"},
-//             {"type": "rotate", "direction": "left"}
-//         ]);
-//     });
+    test("Can add slot", () => {
+        const workspace = new Workspace();
+        const slot = new InstructionSlot();
 
-//     test("Can add blocks to Workspace after creation", () => {
-//         const block_1 = new Instruction("move", "up");
-//         const block_2 = new Instruction("rotate", "left");
-//         const workspace = new Workspace();
+        workspace.add_slot();
+        workspace.add_slot();
 
-//         workspace.add_block(block_1);
-//         workspace.add_block(block_2);
+        expect(workspace.slots).toEqual([slot, slot, slot]);
+    });
 
-//         expect(workspace.blocks).toEqual([block_1, block_2]);
-//     });
+    test("Can convert slots to instructions", () => {
+        const workspace = new Workspace();
+        workspace.slots[0].type = "move";
+        workspace.slots[0].direction = "up";
+        workspace.slots[0].is_complete = true;
 
-//     test("Cannot add non-Instruction objects to Workspace", () => {
-//         const workspace = new Workspace();
+        expect(workspace.to_instructions()).toEqual([new Instruction("move", "up")]);
+    });
 
-//         expect(() => workspace.add_block("invalid")).toThrow();
-//     });
-// });
+    test("Can convert Workspace to JSON", () => {
+        const workspace = new Workspace();
+        workspace.slots.push(new InstructionSlot());
+        workspace.slots[0].type = "move";
+        workspace.slots[0].direction = "up";
+        workspace.slots[0].is_complete = true;
+        workspace.slots[1].type = "rotate";
+        workspace.slots[1].direction = "left";
+        workspace.slots[1].is_complete = true;
+        
 
-// describe("InstructionState", () => {
-//     test("Can create InstructionState object", () => {
-//         const instruction = new InstructionState();
+        expect(workspace.to_json()).toEqual([
+            {"type": "move", "direction": "up"},
+            {"type": "rotate", "direction": "left"}
+        ]);
+    });
+});
 
-//         expect(instruction).toHaveProperty("order");
-//         expect(instruction).toHaveProperty("type");
-//         expect(instruction).toHaveProperty("direction");
-//     });
+describe("WorkspaceController", () => {
+    test("Can create WorkspaceController object", () => {
+        const workspace = new Workspace();
+        const controller = new WorkspaceController(workspace);
 
-//     test("InstructionState initial state is empty", () => {
-//         const instruction = new InstructionState();
+        expect(controller).toHaveProperty("workspace");
+    });
 
-//         expect(instruction.order).toBe(null);
-//         expect(instruction.type).toBe(null);
-//         expect(instruction.direction).toBe(null);
-//     });
+    test("Can set current slot index", () => {
+        const workspace = new Workspace();
+        const controller = new WorkspaceController(workspace);
+        controller.workspace.slots.push(new InstructionSlot());
+        controller.workspace.slots[1].type = "move";
+        controller.workspace.slots[1].direction = "up";
 
-//     test("Can set InstructionState type", () => {
-//         const instruction = new InstructionState();
-//         instruction.setType("move");
+        controller.set_index(1);
 
-//         expect(instruction.type).toBe("move");
-//     });
+        expect(controller.workspace.curr_idx).toBe(1);
+    });
 
-//     test("Can set InstructionState direction", () => {
-//         const instruction = new InstructionState();
-//         instruction.setDirection("up");
+    test("Cannot set current slot index to an index that doesn't exist", () => {
+        const workspace = new Workspace();
+        const controller = new WorkspaceController(workspace);
 
-//         expect(instruction.direction).toBe("up");
-//     });
+        expect(() => controller.set_index(1)).toThrow("Slot index out of bounds");
+    });
 
-//     test("Can validate valid type and direction", () => {
-//         const instruction = 
-//     })
-// });
+    test("Can set type of current slot", () => {
+        const workspace = new Workspace();
+        const controller = new WorkspaceController(workspace);
 
-// describe("WorkspaceState", () => {
-//     test("Can create WorkspaceState object", () => {
-//         const state = new WorkspaceState();
+        controller.set_type("rotate");
 
-//         expect(state).toHaveProperty("instructions");
-//     });
-// });
+        expect(controller.workspace.curr_slot.type).toEqual("rotate");
+    });
+
+    test("Can set direction of current slot", () => {
+        const workspace = new Workspace();
+        const controller = new WorkspaceController(workspace);
+        controller.workspace.curr_slot.type = "rotate";
+        
+        controller.set_direction("left");
+
+        expect(controller.workspace.curr_slot.direction).toEqual("left");
+    });
+});

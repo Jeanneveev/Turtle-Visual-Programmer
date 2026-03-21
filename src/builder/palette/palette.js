@@ -84,50 +84,49 @@ class Instruction {
     }
 }
 
-// class Workspace {
-//     constructor(blocks = []) {
-//         this.blocks = blocks;
-//     }
+class Workspace {
+    constructor() {
+        this.slots = [new InstructionSlot()];
+        this.curr_idx = 0;
+    }
 
-//     add_block(instruction) {
-//         if (!(instruction instanceof Instruction)) {
-//             throw new Error("Can only add Blocks to Workspace");
-//         }
+    get curr_slot() {
+        return this.slots[this.curr_idx];
+    }
 
-//         this.blocks.push(instruction);
-//     }
+    add_slot() {
+        this.slots.push(new InstructionSlot());
+    }
 
-//     to_json() {
-//         return this.blocks.map(instruction => instruction.to_json());
-//     }
-// }
+    to_instructions() {
+        return this.slots.map(slot => slot.to_instruction());
+    }
 
-// class InstructionState {
-//     constructor(order=1) {
-//         this.order = order;
-//         this.type = null;
-//         this.direction = null;
-//     }
+    to_json() {
+        const instructions = this.to_instructions();
+        return instructions.map(instruction => instruction.to_json());
+    }
+}
 
-//     setType(type) {
-//         if (!VALID_TYPES.includes(type)) {
-//             throw new Error("Invalid type");
-//         }
-//         this.type = type;
-//     }
+class WorkspaceController {
+    constructor(workspace) {
+        this.workspace = workspace;
+    }
 
-//     setDirection(direction) {
-//         if (!VALID_DIRECTIONS.includes(direction)) {
+    set_index(index) {
+        if (this.workspace.slots.length < index + 1) {
+            throw Error("Slot index out of bounds");
+        }
+        this.workspace.curr_idx = index;
+    }
 
-//         }
-//         this.direction = direction;
-//     }
-// }
+    set_type(type) {
+        this.workspace.curr_slot.set_type(type);
+    }
 
-// class WorkspaceState {
-//     constructor(instructions = []) {
-//         this.instructions = instructions;
-//     }
-// }
+    set_direction(direction) {
+        this.workspace.curr_slot.set_direction(direction);
+    }
+}
 
-module.exports = { InstructionSlot, Instruction, get_valid_directions, get_invalid_directions };
+module.exports = { InstructionSlot, Instruction, Workspace, WorkspaceController, get_valid_directions, get_invalid_directions };
