@@ -1,5 +1,5 @@
 import { test, expect, describe } from "@jest/globals";
-import { InstructionSlot, Instruction, Workspace, WorkspaceController, get_valid_directions, get_invalid_directions } from "../../../src/frontend/builder/palette/palette.js";
+import { InstructionSlot, Instruction, Workspace, WorkspaceController } from "../../../src/frontend/builder/palette/palette.js";
 
 describe("InstructionSlot", () => {
     test("Can create InstructionSlot", () => {
@@ -85,18 +85,18 @@ describe("InstructionSlot", () => {
     });
 });
 
-test("Can get valid directions based on type", () => {
-    const directions = get_valid_directions("move");
-    expect(directions).toEqual(["up", "down", "left", "right"]);
-});
+// test("Can get valid directions based on type", () => {
+//     const directions = get_valid_directions("move");
+//     expect(directions).toEqual(["up", "down", "left", "right"]);
+// });
 
-test("Can get invalid directions based on type", () => {
-    const directions_1 = get_invalid_directions("move");
-    expect(directions_1).toEqual([]);
+// test("Can get invalid directions based on type", () => {
+//     const directions_1 = get_invalid_directions("move");
+//     expect(directions_1).toEqual([]);
 
-    const directions_2 = get_invalid_directions("rotate");
-    expect(directions_2).toEqual(["up", "down"]);
-});
+//     const directions_2 = get_invalid_directions("rotate");
+//     expect(directions_2).toEqual(["up", "down"]);
+// });
 
 describe("Instruction", () => {
     test("Can create Instruction", () => {
@@ -119,6 +119,10 @@ describe("Instruction", () => {
 
     test("Instruction throws error for invalid direction", () => {
         expect(() => new Instruction("move", "invalid")).toThrow();
+    });
+
+    test("Instruction throws error for invalid type/direction combination", () => {
+        expect(() => new Instruction("rotate", "up")).toThrow();
     });
 });
 

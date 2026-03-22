@@ -1,6 +1,4 @@
-const VALID_TYPES = ["move", "rotate"];
-const VALID_DIRECTIONS = ["up", "down", "left", "right"];
-const VALID_DIRECTIONS_BY_TYPE = {
+const VALID_COMBOS = {
     "move": ["up", "down", "left", "right"],
     "rotate": ["left", "right"]
 };
@@ -21,6 +19,7 @@ class InstructionSlot {
      * @param {string} type 
      */
     set_type(type) {
+        const VALID_TYPES = Object.keys(VALID_COMBOS);
         if (!VALID_TYPES.includes(type)) {
             throw new Error("Invalid slot type");
         }
@@ -38,6 +37,7 @@ class InstructionSlot {
             throw new Error("Cannot set direction without type");
         }
 
+        const VALID_DIRECTIONS = VALID_COMBOS[this.type];
         if (!VALID_DIRECTIONS.includes(direction)) {
             throw new Error("Invalid slot direction");
         }
@@ -54,22 +54,27 @@ class InstructionSlot {
     }
 }
 
-const get_valid_directions = (type) => {
-    return VALID_DIRECTIONS_BY_TYPE[type];
-}
+// const get_valid_directions = (type) => {
+//     return VALID_COMBOS[type];
+// }
 
-const get_invalid_directions = (type) => {
-    const valid = VALID_DIRECTIONS_BY_TYPE[type];
-    return VALID_DIRECTIONS.filter(direction => !valid.includes(direction));
-}
+// const get_invalid_directions = (type) => {
+//     const valid = VALID_COMBOS[type];
+//     return VALID_DIRECTIONS.filter(direction => !valid.includes(direction));
+// }
 
 class Instruction {
     constructor(type, direction) {
+        const VALID_TYPES = Object.keys(VALID_COMBOS);
+        const VALID_DIRECTIONS = [].concat(...Object.values(VALID_COMBOS));
         if (!VALID_TYPES.includes(type)) {
             throw new Error("Invalid instruction type");
         }
         if (!VALID_DIRECTIONS.includes(direction)) {
             throw new Error("Invalid instruction direction");
+        }
+        if (!VALID_COMBOS[type].includes(direction)) {
+            throw new Error("Invalid instruction type/direction combination");
         }
 
         this.type = type;
@@ -115,6 +120,7 @@ class WorkspaceController {
 
     add_slot() {
         this.workspace.add_slot();
+        return this.workspace.slots.length - 1; // return index of new slot
     }
 
     set_index(index) {
@@ -133,4 +139,4 @@ class WorkspaceController {
     }
 }
 
-export { InstructionSlot, Instruction, Workspace, WorkspaceController, get_valid_directions, get_invalid_directions };
+export { InstructionSlot, Instruction, Workspace, WorkspaceController };

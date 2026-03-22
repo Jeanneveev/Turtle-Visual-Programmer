@@ -21,7 +21,8 @@ document.querySelectorAll("[data-direction]").forEach(button => {
 });
 
 document.getElementById("add").addEventListener("click", () => {
-    controller.add_slot();
+    const new_idx = controller.add_slot();
+    controller.set_index(new_idx);
     rerender();
 });
 
@@ -42,6 +43,12 @@ const rerender = () => {
         if (idx === workspace.curr_idx) {
             div.style.border = "2px solid blue";
         }
+
+        // on click, set as current slot
+        div.addEventListener("click", () => {
+            controller.set_index(idx);
+            rerender();
+        });
 
         workspace_div.appendChild(div);
     });
