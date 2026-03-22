@@ -1,5 +1,5 @@
-const { test, expect, describe } = require("@jest/globals")
-const { InstructionSlot, Instruction, Workspace, WorkspaceController, get_valid_directions, get_invalid_directions } = require("../../../src/builder/palette/palette.js")
+import { test, expect, describe } from "@jest/globals";
+import { InstructionSlot, Instruction, Workspace, WorkspaceController, get_valid_directions, get_invalid_directions } from "../../../src/frontend/builder/palette/palette.js";
 
 describe("InstructionSlot", () => {
     test("Can create InstructionSlot", () => {
@@ -187,15 +187,13 @@ describe("Workspace", () => {
 
 describe("WorkspaceController", () => {
     test("Can create WorkspaceController object", () => {
-        const workspace = new Workspace();
-        const controller = new WorkspaceController(workspace);
+        const controller = new WorkspaceController();
 
         expect(controller).toHaveProperty("workspace");
     });
 
     test("Can set current slot index", () => {
-        const workspace = new Workspace();
-        const controller = new WorkspaceController(workspace);
+        const controller = new WorkspaceController();
         controller.workspace.slots.push(new InstructionSlot());
         controller.workspace.slots[1].type = "move";
         controller.workspace.slots[1].direction = "up";
@@ -206,15 +204,13 @@ describe("WorkspaceController", () => {
     });
 
     test("Cannot set current slot index to an index that doesn't exist", () => {
-        const workspace = new Workspace();
-        const controller = new WorkspaceController(workspace);
+        const controller = new WorkspaceController();
 
         expect(() => controller.set_index(1)).toThrow("Slot index out of bounds");
     });
 
     test("Can set type of current slot", () => {
-        const workspace = new Workspace();
-        const controller = new WorkspaceController(workspace);
+        const controller = new WorkspaceController();
 
         controller.set_type("rotate");
 
@@ -222,8 +218,7 @@ describe("WorkspaceController", () => {
     });
 
     test("Can set direction of current slot", () => {
-        const workspace = new Workspace();
-        const controller = new WorkspaceController(workspace);
+        const controller = new WorkspaceController();
         controller.workspace.curr_slot.type = "rotate";
         
         controller.set_direction("left");

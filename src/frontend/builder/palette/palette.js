@@ -1,6 +1,6 @@
-VALID_TYPES = ["move", "rotate"];
-VALID_DIRECTIONS = ["up", "down", "left", "right"];
-VALID_DIRECTIONS_BY_TYPE = {
+const VALID_TYPES = ["move", "rotate"];
+const VALID_DIRECTIONS = ["up", "down", "left", "right"];
+const VALID_DIRECTIONS_BY_TYPE = {
     "move": ["up", "down", "left", "right"],
     "rotate": ["left", "right"]
 };
@@ -109,8 +109,12 @@ class Workspace {
 }
 
 class WorkspaceController {
-    constructor(workspace) {
-        this.workspace = workspace;
+    constructor() {
+        this.workspace = new Workspace();
+    }
+
+    add_slot() {
+        this.workspace.add_slot();
     }
 
     set_index(index) {
@@ -129,4 +133,4 @@ class WorkspaceController {
     }
 }
 
-module.exports = { InstructionSlot, Instruction, Workspace, WorkspaceController, get_valid_directions, get_invalid_directions };
+export { InstructionSlot, Instruction, Workspace, WorkspaceController, get_valid_directions, get_invalid_directions };
