@@ -1,0 +1,139 @@
+:root {
+    --palette-width: 14rem;
+    --gap: 1rem;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: system-ui, sans-serif;
+    background: #f8f9fc;
+    display: grid;
+    grid-template-columns: 1fr minmax(var(--palette-width), 17.5rem);
+    grid-template-areas: "main aside";
+    gap: var(--gap);
+    padding: var(--gap);
+}
+
+main {
+    grid-area: main;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+    width: 100%;
+}
+
+aside.palette {
+    grid-area: aside;
+    align-self: start;
+    position: sticky;
+    top: var(--gap);
+    width: 100%;
+    min-width: var(--palette-width);
+    background: #fff;
+    border: 1px solid #dfe4ef;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 .25rem .75rem rgba(0,0,0,.06);
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+
+#workspace {
+    min-height: min(45vh, 19rem);
+    padding: 0.9rem;
+    border: 0.125rem dashed #6f7a93;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.slot {
+    width: 100%;
+    padding: 0.75rem;
+    border: 0.1rem solid #c7cfdc;
+    border-radius: 0.5rem;
+    background: #fbfdff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.7rem;
+}
+
+#add,
+#submit {
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+}
+
+#add {
+    background: #2f86d5;
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+#submit {
+    background: #1f712c;
+    width: 7.5rem;
+    margin: 0 auto;
+}
+
+aside.palette {
+    width: var(--palette-width);
+    min-width: var(--palette-width);
+    background: #fff;
+    border: 1px solid #dfe4ef;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    box-shadow: 0 .25rem 1.25rem rgba(0,0,0,.06);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: sticky;
+    top: var(--gap);
+}
+
+.palette .type-blocks,
+.palette .direction-blocks {
+    display: grid;
+    gap: .5rem;
+}
+
+.palette button {
+    width: 100%;
+    border: 1px solid #c7cfdc;
+    border-radius: 0.5rem;
+    background: #f7f9ff;
+    color: #2a3a59;
+    cursor: pointer;
+    padding: .5rem 1rem;
+}
+
+.palette button:hover {
+    background: #e8efff;
+}
+
+.palette button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    border-color: #d5dbe6;
+    background: #f3f5f9;
+    color: #8a96ab;
+    box-shadow: none;
+}
+
+.palette button:disabled:hover {
+    background: #f3f5f9;
+}

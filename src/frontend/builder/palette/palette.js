@@ -137,6 +137,10 @@ class WorkspaceController {
     set_direction(direction) {
         this.workspace.curr_slot.set_direction(direction);
     }
+
+    to_json() {
+        return this.workspace.to_json();
+    }
 }
 
-export { InstructionSlot, Instruction, Workspace, WorkspaceController };
+export { InstructionSlot, Instruction, Workspace, WorkspaceController, VALID_COMBOS };
