@@ -68,6 +68,10 @@ aside.palette {
     gap: 0.7rem;
 }
 
+.curr_slot {
+    border: 2px solid blue;
+}
+
 #add,
 #submit {
     border: none;

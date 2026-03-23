@@ -60,6 +60,12 @@ const add_event_listeners = (dom, handlers) => {
     dom.submit_button.addEventListener("click", handlers.submit_click_evt);
 };
 
+/**
+ * Get all valid directions that should be enabled
+ * @param {String} type 
+ * @param {Object} VALID_COMBOS 
+ * @returns {Array<String>}
+ */
 const get_enabled_directions = (type, VALID_COMBOS) => {
     return VALID_COMBOS[type] || [];
 };
@@ -97,7 +103,7 @@ const render_workspace = (view_model, workspace_div, slot_click_evt) => {
 
         // if current slot, highlight
         if (slot.is_curr) {
-            div.style.border = "2px solid blue";
+            div.classList.add("curr_slot");
         }
 
         // on click, set as current slot
@@ -142,4 +148,4 @@ const init = () => {
     rerender(workspace, dom, handlers);
 };
 
-export { add_event_listeners, init };
+export { add_event_listeners, get_enabled_directions, init };
