@@ -45,7 +45,7 @@ aside.palette {
 }
 
 
-#workspace {
+.workspace {
     min-height: min(45vh, 19rem);
     padding: 0.9rem;
     border: 0.125rem dashed #6f7a93;
@@ -72,8 +72,8 @@ aside.palette {
     border: 2px solid blue;
 }
 
-#add,
-#submit {
+.add, .remove,
+.submit {
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
@@ -82,13 +82,20 @@ aside.palette {
     padding: 0.75rem 1rem;
 }
 
-#add {
-    background: #2f86d5;
-    align-self: flex-end;
-    margin-left: auto;
+.slot_btn_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 0.5rem;
 }
 
-#submit {
+.slot_btn_container > button {
+    background: #2f86d5;
+    align-self: flex-end;
+    margin: 0;
+}
+
+.submit {
     background: #1f712c;
     width: 7.5rem;
     margin: 0 auto;

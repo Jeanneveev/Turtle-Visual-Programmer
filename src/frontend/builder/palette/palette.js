@@ -96,11 +96,18 @@ class Workspace {
     }
 
     get curr_slot() {
-        return this.slots[this.curr_idx];
+        if (this.slots.length !== 0) {
+            return this.slots[this.curr_idx];
+        }
+        return null;
     }
 
     add_slot() {
         this.slots.push(new InstructionSlot());
+    }
+
+    remove_slot() {
+        this.slots.splice(this.curr_idx, 1);
     }
 
     to_instructions() {
@@ -121,6 +128,15 @@ class WorkspaceController {
     add_slot() {
         this.workspace.add_slot();
         return this.workspace.slots.length - 1; // return index of new slot
+    }
+
+    remove_slot() {
+        this.workspace.remove_slot();
+
+        // Update curr_idx if now out of bounds
+        if (this.workspace.curr_idx > this.workspace.slots.length - 1) {
+            this.workspace.curr_idx = this.workspace.slots.length - 1;
+        }
     }
 
     set_index(index) {

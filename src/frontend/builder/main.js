@@ -25,6 +25,12 @@ const get_event_handlers = (controller, rerender) => {
             rerender();
         },
 
+        remove_click_evt: () => {
+            console.log("Remove button clicked");
+            controller.remove_slot();
+            rerender();
+        },
+
         submit_click_evt: () => {
             const json = controller.to_json();
             console.log(json);
@@ -57,6 +63,7 @@ const add_event_listeners = (dom, handlers) => {
     });
 
     dom.add_button.addEventListener("click", handlers.add_click_evt);
+    dom.remove_button.addEventListener("click", handlers.remove_click_evt);
     dom.submit_button.addEventListener("click", handlers.submit_click_evt);
 };
 
@@ -125,7 +132,10 @@ const rerender = (workspace, dom, handlers) => {
     const view_model = workspace_view_model(workspace);
     render_workspace(view_model, dom.workspace_div, handlers.slot_click_evt);
 
-    const enabled_directions = get_enabled_directions(workspace.curr_slot.type, VALID_COMBOS);
+    let enabled_directions = [];
+    if (workspace.curr_slot) {  // If there's any existing slots
+        enabled_directions = get_enabled_directions(workspace.curr_slot.type, VALID_COMBOS);
+    }
     update_direction_buttons(dom.direction_buttons, enabled_directions);
 }
 
@@ -140,6 +150,7 @@ const init = () => {
         type_buttons: document.querySelectorAll("[data-type]"),
         direction_buttons: document.querySelectorAll("[data-direction]"),
         add_button: document.getElementById("add"),
+        remove_button: document.getElementById("remove"),
         submit_button: document.getElementById("submit")
     };
 

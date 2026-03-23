@@ -162,6 +162,30 @@ describe("Workspace", () => {
         expect(workspace.slots).toEqual([slot, slot, slot]);
     });
 
+    test("Can remove slot", () => {
+        const workspace = new Workspace();
+        expect(workspace.slots).toEqual([new InstructionSlot()]);
+
+        workspace.remove_slot();
+        expect(workspace.slots).toEqual([]);
+    });
+
+    test("Remove slot removes current slot", () => {
+        const workspace = new Workspace();
+        workspace.slots.push(new InstructionSlot(), new InstructionSlot());
+        workspace.slots[0].type = "move";
+        workspace.slots[1].type = "rotate";
+        workspace.slots[2].type = "move";
+        workspace.curr_idx = 0;
+
+        workspace.remove_slot();
+
+        const expected = [new InstructionSlot(), new InstructionSlot()];
+        expected[0].type = "rotate";
+        expected[1].type = "move";
+        expect(workspace.slots).toEqual(expected);
+    })
+
     test("Can convert slots to instructions", () => {
         const workspace = new Workspace();
         workspace.slots[0].type = "move";
@@ -228,5 +252,49 @@ describe("WorkspaceController", () => {
         controller.set_direction("left");
 
         expect(controller.workspace.curr_slot.direction).toEqual("left");
+    });
+
+    test("Can add slot", () => {
+        const controller = new WorkspaceController();
+        expect(controller.workspace.slots).toEqual([new InstructionSlot()]);
+
+        controller.add_slot();
+        expect(controller.workspace.slots).toEqual([new InstructionSlot(), new InstructionSlot()]);
+    });
+
+    test("Adding slot returns new slot's index", () => {
+        const controller = new WorkspaceController();
+
+        const new_idx = controller.add_slot();
+
+        expect(new_idx).toBe(1);
+    });
+
+    test("Can delete slot", () => {
+        const controller = new WorkspaceController();
+        expect(controller.workspace.slots).toEqual([new InstructionSlot()]);
+
+        controller.remove_slot();
+        expect(controller.workspace.slots).toEqual([]);
+    });
+
+    test("Deleting slot doesn't change curr_idx if it's in bounds", () => {
+        const controller = new WorkspaceController();
+        controller.workspace.slots.push(new InstructionSlot(), new InstructionSlot());
+        controller.workspace.curr_idx = 1;
+
+        controller.remove_slot();
+
+        expect(controller.workspace.curr_idx).toBe(1);
+    });
+
+    test("Deleting slot changes curr_idx if it's out of bounds", () => {
+        const controller = new WorkspaceController();
+        controller.workspace.slots.push(new InstructionSlot());
+        controller.workspace.curr_idx = 1;
+
+        controller.remove_slot();
+
+        expect(controller.workspace.curr_idx).toBe(0);
     });
 });
