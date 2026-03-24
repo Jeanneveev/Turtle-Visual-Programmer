@@ -3,8 +3,8 @@
  */
 
 import { test, expect, describe, jest } from "@jest/globals";
-const { WorkspaceController, VALID_COMBOS } = await import("../../src/frontend/builder/palette/palette.js");
-const { init, add_event_listeners, get_enabled_directions } = await import("../../src/frontend/builder/main.js");
+const { VALID_COMBOS } = await import("../../src/frontend/builder/palette/palette.js");
+const { init, get_enabled_directions } = await import("../../src/frontend/builder/main.js");
 
 const example_dom = `
     <button data-type="move" id="type_ex"></button>
@@ -13,8 +13,9 @@ const example_dom = `
     <div id="workspace">
         <div class="slot curr_slot" style="border: 2px solid blue;">1:  </div>
     </div>
+    <button id="reset"></button>
     <button id="add"></button>
-    <button id="remove"></button>
+    <button id="delete"></button>
     <button id="submit"></button>
 `
 describe("Click events", () => {
@@ -90,23 +91,23 @@ describe("Click events", () => {
         expect(slots[1].classList.contains("curr_slot")).toBeFalsy();
     });
 
-    test("Clicking remove button removes current slot", () => {
+    test("Clicking delete button deletes current slot", () => {
         document.body.innerHTML = example_dom;
         const workspace = document.getElementById("workspace");
-        const remove_btn = document.getElementById("remove");
+        const delete_btn = document.getElementById("delete");
 
         expect(workspace.textContent).toContain("1:");
 
         init();
-        remove_btn.click();
+        delete_btn.click();
 
         expect(workspace.textContent).not.toContain("1:");
     });
 
-    test ("Clicking remove button sets next slot as current slot, if it exists", () => {
+    test ("Clicking delete button sets next slot as current slot, if it exists", () => {
         document.body.innerHTML = example_dom;
         const add_btn = document.getElementById("add");
-        const remove_btn = document.getElementById("remove");
+        const delete_btn = document.getElementById("delete");
 
         init();
         add_btn.click();    // sets second slot as current slot
@@ -118,17 +119,17 @@ describe("Click events", () => {
         expect(slots[1].classList.contains("curr_slot")).toBeTruthy();
         expect(slots[2].classList.contains("curr_slot")).toBeFalsy();
         
-        remove_btn.click();
+        delete_btn.click();
 
         slots = document.querySelectorAll("div.slot");
         expect(slots[0].classList.contains("curr_slot")).toBeFalsy();
         expect(slots[1].classList.contains("curr_slot")).toBeTruthy();
     });
 
-    test("Clicking remove button sets previous slot as current slot, if next slot doesn't exist", () => {
+    test("Clicking delete button sets previous slot as current slot, if next slot doesn't exist", () => {
         document.body.innerHTML = example_dom;
         const add_btn = document.getElementById("add");
-        const remove_btn = document.getElementById("remove");
+        const delete_btn = document.getElementById("delete");
 
         init();
         add_btn.click();    // sets second slot as current slot
@@ -138,11 +139,29 @@ describe("Click events", () => {
         expect(slots[1].classList.contains("curr_slot")).toBeFalsy();
         expect(slots[2].classList.contains("curr_slot")).toBeTruthy();
 
-        remove_btn.click();
+        delete_btn.click();
 
         slots = document.querySelectorAll("div.slot");
         expect(slots[0].classList.contains("curr_slot")).toBeFalsy();
         expect(slots[1].classList.contains("curr_slot")).toBeTruthy();
+    });
+
+    test("Clicking reset button deletes type and direction from current slot", () => {
+        document.body.innerHTML = example_dom;
+        const workspace = document.getElementById("workspace");
+        const type_btn = document.getElementById("type_ex");
+        const direction_btn = document.getElementById("dir_ex");
+        const reset_btn = document.getElementById("reset");
+
+        init();
+        type_btn.click();
+        direction_btn.click();
+        expect(workspace.textContent).toContain("move");
+        expect(workspace.textContent).toContain("up");
+        reset_btn.click();
+
+        expect(workspace.textContent).not.toContain("move");
+        expect(workspace.textContent).not.toContain("up");
     });
 
     test("Clicking submit logs JSON", () => {

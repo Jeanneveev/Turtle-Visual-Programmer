@@ -19,15 +19,20 @@ const get_event_handlers = (controller, rerender) => {
             rerender();
         },
 
+        reset_click_evt: () => {
+            controller.reset();
+            rerender();
+        },
+
         add_click_evt: () => {
             const new_idx = controller.add_slot();
             controller.set_index(new_idx);
             rerender();
         },
 
-        remove_click_evt: () => {
-            console.log("Remove button clicked");
-            controller.remove_slot();
+        delete_click_evt: () => {
+            console.log("Delete button clicked");
+            controller.delete_slot();
             rerender();
         },
 
@@ -62,8 +67,9 @@ const add_event_listeners = (dom, handlers) => {
         });
     });
 
+    dom.reset_button.addEventListener("click", handlers.reset_click_evt);
     dom.add_button.addEventListener("click", handlers.add_click_evt);
-    dom.remove_button.addEventListener("click", handlers.remove_click_evt);
+    dom.delete_button.addEventListener("click", handlers.delete_click_evt);
     dom.submit_button.addEventListener("click", handlers.submit_click_evt);
 };
 
@@ -149,8 +155,9 @@ const init = () => {
         workspace_div: document.getElementById("workspace"),
         type_buttons: document.querySelectorAll("[data-type]"),
         direction_buttons: document.querySelectorAll("[data-direction]"),
+        reset_button: document.getElementById("reset"),
         add_button: document.getElementById("add"),
-        remove_button: document.getElementById("remove"),
+        delete_button: document.getElementById("delete"),
         submit_button: document.getElementById("submit")
     };
 

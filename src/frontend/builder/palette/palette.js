@@ -46,6 +46,11 @@ class InstructionSlot {
         this.is_complete = true;
     }
 
+    reset() {
+        this.type = null;
+        this.direction = null;
+    }
+
     to_instruction() {
         if (!this.is_complete) {
             throw new Error("Slot must be complete to be converted into Instruction");
@@ -106,8 +111,12 @@ class Workspace {
         this.slots.push(new InstructionSlot());
     }
 
-    remove_slot() {
+    delete_curr_slot() {
         this.slots.splice(this.curr_idx, 1);
+    }
+
+    reset_curr_slot() {
+        this.curr_slot.reset();
     }
 
     to_instructions() {
@@ -130,8 +139,8 @@ class WorkspaceController {
         return this.workspace.slots.length - 1; // return index of new slot
     }
 
-    remove_slot() {
-        this.workspace.remove_slot();
+    delete_slot() {
+        this.workspace.delete_curr_slot();
 
         // Update curr_idx if now out of bounds
         if (this.workspace.curr_idx > this.workspace.slots.length - 1) {
@@ -152,6 +161,10 @@ class WorkspaceController {
 
     set_direction(direction) {
         this.workspace.curr_slot.set_direction(direction);
+    }
+
+    reset() {
+        this.workspace.reset_curr_slot();
     }
 
     to_json() {

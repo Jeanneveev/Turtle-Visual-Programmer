@@ -58,13 +58,22 @@ describe("InstructionSlot", () => {
 
     test("Resetting set type with set direction also resets direction", () => {
         const slot = new InstructionSlot();
-
-        slot.set_type("move");
-        slot.set_direction("up");
+        slot.type = "move";
+        slot.direction = "up";
 
         slot.set_type("rotate");
 
         expect(slot.direction).toBe(null);
+    });
+
+    test("Can reset type and direction", () => {
+        const slot = new InstructionSlot();
+        slot.type = "move";
+        slot.direction = "up";
+        
+        slot.reset();
+
+        expect(slot.type).toBe(null);
     });
 
     test("Can convert completed slot to Instruction", () => {
@@ -84,19 +93,6 @@ describe("InstructionSlot", () => {
         expect(() => slot.to_instruction()).toThrow("Slot must be complete to be converted into Instruction");
     });
 });
-
-// test("Can get valid directions based on type", () => {
-//     const directions = get_valid_directions("move");
-//     expect(directions).toEqual(["up", "down", "left", "right"]);
-// });
-
-// test("Can get invalid directions based on type", () => {
-//     const directions_1 = get_invalid_directions("move");
-//     expect(directions_1).toEqual([]);
-
-//     const directions_2 = get_invalid_directions("rotate");
-//     expect(directions_2).toEqual(["up", "down"]);
-// });
 
 describe("Instruction", () => {
     test("Can create Instruction", () => {
@@ -162,15 +158,15 @@ describe("Workspace", () => {
         expect(workspace.slots).toEqual([slot, slot, slot]);
     });
 
-    test("Can remove slot", () => {
+    test("Can delete slot", () => {
         const workspace = new Workspace();
         expect(workspace.slots).toEqual([new InstructionSlot()]);
 
-        workspace.remove_slot();
+        workspace.delete_curr_slot();
         expect(workspace.slots).toEqual([]);
     });
 
-    test("Remove slot removes current slot", () => {
+    test("Delete slot deletes current slot", () => {
         const workspace = new Workspace();
         workspace.slots.push(new InstructionSlot(), new InstructionSlot());
         workspace.slots[0].type = "move";
@@ -178,13 +174,24 @@ describe("Workspace", () => {
         workspace.slots[2].type = "move";
         workspace.curr_idx = 0;
 
-        workspace.remove_slot();
+        workspace.delete_curr_slot();
 
         const expected = [new InstructionSlot(), new InstructionSlot()];
         expected[0].type = "rotate";
         expected[1].type = "move";
         expect(workspace.slots).toEqual(expected);
-    })
+    });
+
+    test("Reset slot resets current slot", () => {
+        const workspace = new Workspace();
+        workspace.curr_slot.type = "move";
+        workspace.curr_slot.direction = "up";
+        
+        workspace.reset_curr_slot()
+
+        expect(workspace.curr_slot.type).toBe(null);
+        expect(workspace.curr_slot.direction).toBe(null);
+    });
 
     test("Can convert slots to instructions", () => {
         const workspace = new Workspace();
@@ -210,6 +217,16 @@ describe("Workspace", () => {
             {"type": "move", "direction": "up"},
             {"type": "rotate", "direction": "left"}
         ]);
+    });
+
+    test("Can reset current slot", () => {
+        const workspace = new Workspace();
+        workspace.curr_slot.type = "move";
+        workspace.curr_slot.direction = "up";
+        
+        workspace.reset_curr_slot();
+
+        expect(workspace.curr_slot.type).toBe(null);
     });
 });
 
@@ -274,7 +291,7 @@ describe("WorkspaceController", () => {
         const controller = new WorkspaceController();
         expect(controller.workspace.slots).toEqual([new InstructionSlot()]);
 
-        controller.remove_slot();
+        controller.delete_slot();
         expect(controller.workspace.slots).toEqual([]);
     });
 
@@ -283,7 +300,7 @@ describe("WorkspaceController", () => {
         controller.workspace.slots.push(new InstructionSlot(), new InstructionSlot());
         controller.workspace.curr_idx = 1;
 
-        controller.remove_slot();
+        controller.delete_slot();
 
         expect(controller.workspace.curr_idx).toBe(1);
     });
@@ -293,8 +310,19 @@ describe("WorkspaceController", () => {
         controller.workspace.slots.push(new InstructionSlot());
         controller.workspace.curr_idx = 1;
 
-        controller.remove_slot();
+        controller.delete_slot();
 
         expect(controller.workspace.curr_idx).toBe(0);
     });
+
+    test("Can reset slot", () => {
+        const controller = new WorkspaceController();
+        controller.workspace.curr_slot.type = "rotate";
+        controller.workspace.curr_slot.direction = "left";
+
+        controller.reset();
+
+        expect(controller.workspace.curr_slot.type).toBe(null);
+        expect(controller.workspace.curr_slot.direction).toBe(null);
+    })
 });
