@@ -16,3 +16,9 @@ class Direction(Enum):
             return True
         
         return False
+    
+@dataclass
+class State:
+    x: int = 0
+    y: int = 0
+    direction: Direction = Direction.UP

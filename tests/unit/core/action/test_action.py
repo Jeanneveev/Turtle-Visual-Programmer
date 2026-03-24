@@ -43,82 +43,82 @@ class TestMoveAction(unittest.TestCase):
 
         move_action.execute(context)
 
-        self.assertEqual(1, context.y)
+        self.assertEqual(1, context.state.y)
 
     def test_can_execute_move_down(self):
         context = init_context()
-        context.y = 3
+        context.state.y = 3
         move_action = Move(Direction.DOWN)
 
         move_action.execute(context)
 
-        self.assertEqual(2, context.y)
+        self.assertEqual(2, context.state.y)
 
     def test_can_execute_move_left(self):
         context = init_context()
-        context.x = 3
+        context.state.x = 3
         move_action = Move(Direction.LEFT)
 
         move_action.execute(context)
 
-        self.assertEqual(2, context.x)
+        self.assertEqual(2, context.state.x)
 
     def test_can_execute_move_right(self):
         context = init_context()
-        context.x = 3
+        context.state.x = 3
         move_action = Move(Direction.RIGHT)
 
         move_action.execute(context)
 
-        self.assertEqual(4, context.x)
+        self.assertEqual(4, context.state.x)
 
     def test_can_unexecute_move_up(self):
         context = init_context()
-        context.x = 2
-        context.y = 4
+        context.state.x = 2
+        context.state.y = 4
         move_action = Move(Direction.UP)
 
         move_action.execute(context)
-        self.assertEqual(5, context.y)
+        self.assertEqual(5, context.state.y)
         
         move_action.unexecute(context)
-        self.assertEqual(4, context.y)
+        self.assertEqual(4, context.state.y)
     
     def test_can_unexecute_move_down(self):
         context = init_context()
-        context.x = 2
-        context.y = 4
+        context.state.x = 2
+        context.state.y = 4
         move_action = Move(Direction.DOWN)
 
         move_action.execute(context)
-        self.assertEqual(3, context.y)
+        self.assertEqual(3, context.state.y)
         
         move_action.unexecute(context)
-        self.assertEqual(4, context.y)
+        self.assertEqual(4, context.state.y)
 
     def test_can_unexecute_move_left(self):
         context = init_context()
-        context.x = 2
-        context.y = 4
+        context.state.x = 2
+        context.state.y = 4
         move_action = Move(Direction.LEFT)
 
         move_action.execute(context)
-        self.assertEqual(1, context.x)
+        self.assertEqual(1, context.state.x)
         
         move_action.unexecute(context)
-        self.assertEqual(2, context.x)
+        self.assertEqual(2, context.state.x)
 
     def test_can_unexecute_move_right(self):
         context = init_context()
-        context.x = 2
-        context.y = 4
+        context.state.x = 2
+        context.state.y = 4
         move_action = Move(Direction.RIGHT)
 
         move_action.execute(context)
-        self.assertEqual(3, context.x)
+        self.assertEqual(3, context.state.x)
         
         move_action.unexecute(context)
-        self.assertEqual(2, context.x)
+        self.assertEqual(2, context.state.x)
 
 class TestRotateAction(unittest.TestCase):
     def test_can_make_rotate_action(self):
@@ -136,7 +136,7 @@ class TestRotateAction(unittest.TestCase):
 
         rotate_action.execute(context)
 
-        self.assertEqual(Direction.LEFT, context.direction)
+        self.assertEqual(Direction.LEFT, context.state.direction)
 
     def test_can_execute_rotate_right(self):
         context = init_context()
@@ -144,17 +144,17 @@ class TestRotateAction(unittest.TestCase):
 
         rotate_action.execute(context)
 
-        self.assertEqual(Direction.RIGHT, context.direction)
+        self.assertEqual(Direction.RIGHT, context.state.direction)
 
     def test_can_unexecute_rotate_left(self):
         context = init_context()
         rotate_action = Rotate(Direction.LEFT)
 
         rotate_action.execute(context)
-        self.assertEqual(Direction.LEFT, context.direction)
+        self.assertEqual(Direction.LEFT, context.state.direction)
 
         rotate_action.unexecute(context)
-        self.assertEqual(Direction.UP, context.direction)
+        self.assertEqual(Direction.UP, context.state.direction)
         
 
     def test_can_unexecute_rotate_right(self):
@@ -162,10 +162,10 @@ class TestRotateAction(unittest.TestCase):
         rotate_action = Rotate(Direction.RIGHT)
 
         rotate_action.execute(context)
-        self.assertEqual(Direction.RIGHT, context.direction)
+        self.assertEqual(Direction.RIGHT, context.state.direction)
 
         rotate_action.unexecute(context)
-        self.assertEqual(Direction.UP, context.direction)
+        self.assertEqual(Direction.UP, context.state.direction)
         
 
 if __name__ == "__main__":
