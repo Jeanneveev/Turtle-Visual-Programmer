@@ -63,32 +63,26 @@ describe("Click events", () => {
 
     test("Clicking add button sets new slot as current slot", () => {
         document.body.innerHTML = example_dom;
-        let slots = document.querySelectorAll("div.slot");
         const add_btn = document.getElementById("add");
-        expect(slots[0].classList.contains("curr_slot")).toBeTruthy();
+        const { workspace } = init();
+        expect(workspace.curr_idx).toBe(0);
 
-        init();
         add_btn.click();
 
-        slots = document.querySelectorAll("div.slot");
-        expect(slots[0].classList.contains("curr_slot")).toBeFalsy();
-        expect(slots[1].classList.contains("curr_slot")).toBeTruthy();
+        expect(workspace.curr_idx).toBe(1);
     });
 
     test("Clicking a slot sets it as current slot", () => {
         document.body.innerHTML = example_dom;
         const add_btn = document.getElementById("add");
-
-        init();
+        const { workspace } = init();
         add_btn.click();
+        expect(workspace.curr_idx).toBe(1);
+
         let slots = document.querySelectorAll("div.slot");
-        expect(slots[1].classList.contains("curr_slot")).toBeTruthy();
-        
         slots[0].click();
 
-        slots = document.querySelectorAll("div.slot");
-        expect(slots[0].classList.contains("curr_slot")).toBeTruthy();
-        expect(slots[1].classList.contains("curr_slot")).toBeFalsy();
+        expect(workspace.curr_idx).toBe(0);
     });
 
     test("Clicking delete button deletes current slot", () => {
@@ -109,21 +103,17 @@ describe("Click events", () => {
         const add_btn = document.getElementById("add");
         const delete_btn = document.getElementById("delete");
 
-        init();
+        const { workspace } = init();
         add_btn.click();    // sets second slot as current slot
         add_btn.click();    // sets third slot as current slot
         let slots = document.querySelectorAll("div.slot");
         slots[1].click();   // sets second slot as current slot
-        slots = document.querySelectorAll("div.slot");
-        expect(slots[0].classList.contains("curr_slot")).toBeFalsy();
-        expect(slots[1].classList.contains("curr_slot")).toBeTruthy();
-        expect(slots[2].classList.contains("curr_slot")).toBeFalsy();
+        expect(workspace.curr_idx).toBe(1);
         
         delete_btn.click();
 
         slots = document.querySelectorAll("div.slot");
-        expect(slots[0].classList.contains("curr_slot")).toBeFalsy();
-        expect(slots[1].classList.contains("curr_slot")).toBeTruthy();
+        expect(workspace.curr_idx).toBe(1);
     });
 
     test("Clicking delete button sets previous slot as current slot, if next slot doesn't exist", () => {
@@ -131,19 +121,15 @@ describe("Click events", () => {
         const add_btn = document.getElementById("add");
         const delete_btn = document.getElementById("delete");
 
-        init();
+        const { workspace } = init();
         add_btn.click();    // sets second slot as current slot
         add_btn.click();    // sets third slot as current slot
-        let slots = document.querySelectorAll("div.slot");
-        expect(slots[0].classList.contains("curr_slot")).toBeFalsy();
-        expect(slots[1].classList.contains("curr_slot")).toBeFalsy();
-        expect(slots[2].classList.contains("curr_slot")).toBeTruthy();
+        expect(workspace.curr_idx).toBe(2);
 
         delete_btn.click();
 
         slots = document.querySelectorAll("div.slot");
-        expect(slots[0].classList.contains("curr_slot")).toBeFalsy();
-        expect(slots[1].classList.contains("curr_slot")).toBeTruthy();
+        expect(workspace.curr_idx).toBe(1);
     });
 
     test("Clicking reset button deletes type and direction from current slot", () => {

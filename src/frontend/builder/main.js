@@ -164,6 +164,8 @@ const init = () => {
     const handlers = get_event_handlers(controller, () => rerender(workspace, dom, handlers));
     add_event_listeners(dom, handlers);
     rerender(workspace, dom, handlers);
+
+    return { controller, workspace }    // for testing
 };
 
 export { add_event_listeners, get_enabled_directions, init };
