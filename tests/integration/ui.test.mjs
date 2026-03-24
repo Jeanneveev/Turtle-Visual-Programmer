@@ -128,7 +128,6 @@ describe("Click events", () => {
 
         delete_btn.click();
 
-        slots = document.querySelectorAll("div.slot");
         expect(workspace.curr_idx).toBe(1);
     });
 
@@ -150,9 +149,30 @@ describe("Click events", () => {
         expect(workspace.textContent).not.toContain("up");
     });
 
-    test("Clicking submit logs JSON", () => {
+    // test("Clicking submit logs JSON", () => {
+    //     document.body.innerHTML = example_dom;
+    //     const spy = jest.spyOn(console, "log");
+    //     const submit_btn = document.getElementById("submit");
+    //     const type_btn = document.getElementById("type_ex");
+    //     const direction_btn = document.getElementById("dir_ex");
+
+    //     init();
+
+    //     type_btn.click();
+    //     direction_btn.click();
+    //     submit_btn.click();
+
+    //     expect(spy).toHaveBeenCalledWith([
+    //         { "type": "move", "direction": "up" }
+    //     ]);
+    // });
+
+    test("Clicking sumbit sends correct JSON to backend", () => {
         document.body.innerHTML = example_dom;
-        const spy = jest.spyOn(console, "log");
+        global.fetch = jest.fn();
+        const fetch_mock = jest.spyOn(global, "fetch").mockResolvedValue({
+            json: () => Promise.resolve({ trace: "fake trace" })
+        });
         const submit_btn = document.getElementById("submit");
         const type_btn = document.getElementById("type_ex");
         const direction_btn = document.getElementById("dir_ex");
@@ -163,9 +183,11 @@ describe("Click events", () => {
         direction_btn.click();
         submit_btn.click();
 
-        expect(spy).toHaveBeenCalledWith([
-            { "type": "move", "direction": "up" }
-        ]);
+        expect(fetch_mock).toHaveBeenCalledWith("/api/run", {
+            body: [{"direction": "up", "type": "move"}],
+            headers: { "Content-Type": "application/json" },
+            method: "POST",
+        });
     });
 });
 

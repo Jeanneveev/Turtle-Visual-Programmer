@@ -31,7 +31,6 @@ const get_event_handlers = (controller, rerender) => {
         },
 
         delete_click_evt: () => {
-            console.log("Delete button clicked");
             controller.delete_slot();
             rerender();
         },
@@ -39,6 +38,18 @@ const get_event_handlers = (controller, rerender) => {
         submit_click_evt: () => {
             const json = controller.to_json();
             console.log(json);
+            fetch("/api/run", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: json
+            })
+            .then(response => response.json())
+            .then(data => {
+                // TODO: Pass data to visualizer
+                console.log(data);
+            });
         },
 
         slot_click_evt: (idx) => {
