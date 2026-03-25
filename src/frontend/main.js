@@ -1,5 +1,6 @@
-import { Workspace, WorkspaceController, VALID_COMBOS } from "./palette/palette.js";
-import { workspace_view_model } from "./view_model/view_model.js";
+import { Workspace, WorkspaceController, VALID_COMBOS } from "./builder/palette/palette.js";
+import { workspace_view_model } from "./builder/view_model/view_model.js";
+// import { animate } from "./visualizer/visualizer.js";
 
 /**
  * Returns the event handlers for the buttons on the page
@@ -37,18 +38,21 @@ const get_event_handlers = (controller, rerender) => {
 
         submit_click_evt: () => {
             const json = controller.to_json();
+            const json_str = JSON.stringify(json);
             console.log(json);
             fetch("/api/run", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: json
+                body: json_str
             })
             .then(response => response.json())
-            .then(data => {
-                // TODO: Pass data to visualizer
-                console.log(data);
+            .then(async data => {
+                // Store state trace in session storage
+                sessionStorage.setItem("state_trace", JSON.stringify(data));
+                // redirect to visualizer page
+                window.location.href = "../visualizer/visualizer.html";
             });
         },
 
