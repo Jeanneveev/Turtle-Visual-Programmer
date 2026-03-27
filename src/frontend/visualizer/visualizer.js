@@ -55,11 +55,11 @@ const draw_state = (ctx, state) => {
     ctx.translate(get_pixel_x(x), get_pixel_y(y));
     ctx.rotate(translate_direction(direction));
 
-    // draw turtle as larger triangle pointing upwards
+    // draw turtle as an isosceles triangle pointing upwards
     ctx.beginPath();
-    ctx.moveTo(0, 20);   // tip 20 units up
-    ctx.lineTo(-10, -10); // bottom left
-    ctx.lineTo(10, -10);  // bottom right
+    ctx.moveTo(0, TRIANGLE_SIZE);   // tip 20 units up
+    ctx.lineTo(-(TRIANGLE_SIZE/2), -(TRIANGLE_SIZE/2)); // bottom left
+    ctx.lineTo(TRIANGLE_SIZE/2, -(TRIANGLE_SIZE/2));  // bottom right
     ctx.closePath();
     ctx.fillStyle = "green";
     ctx.fill();
@@ -83,7 +83,7 @@ const animate = async (state_trace) => {
     }
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+const load_animation = () => {
     const state_trace_str = sessionStorage.getItem("state_trace");
     if (state_trace_str) {
         const state_trace = JSON.parse(state_trace_str);
@@ -91,4 +91,44 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         console.error("No state trace found in session storage");
     }
-});
+}
+
+const get_event_handlers = () => {
+    return {
+        back_click_evt: () => {
+            window.location.href = "../index.html";
+        },
+        redo_click_evt: () => {
+            load_animation();
+        },
+        step_back_click_evt: () => {
+            // TODO: Implement step back button
+        },
+        step_forward_click_evt: () => {
+            // TODO: Implement step forward button
+        }
+    }
+}
+const add_event_listeners = (dom, handlers) => {
+    dom.back_button.addEventListener("click", handlers.back_click_evt);
+    dom.redo_button.addEventListener("click", handlers.redo_click_evt);
+    dom.step_back_button.addEventListener("click", handlers.step_back_click_evt);
+    dom.step_forward_button.addEventListener("click", handlers.step_forward_click_evt);
+};
+
+const init = () => {
+    // Setup event listeners
+    const dom = {
+        back_button: document.getElementById("back"),
+        redo_button: document.getElementById("redo"),
+        step_back_button: document.getElementById("step_back"),
+        step_forward_button: document.getElementById("step_forward")
+    };
+    const handlers = get_event_handlers();
+    add_event_listeners(dom, handlers);
+
+    // Get state trace from session storage and animate
+    load_animation();
+};
+
+export { init, animate, translate_direction };

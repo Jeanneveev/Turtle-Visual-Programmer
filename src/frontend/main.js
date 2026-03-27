@@ -1,6 +1,9 @@
 import { Workspace, WorkspaceController, VALID_COMBOS } from "./builder/palette/palette.js";
 import { workspace_view_model } from "./builder/view_model/view_model.js";
-// import { animate } from "./visualizer/visualizer.js";
+
+const redirect_to = (url) => {
+    window.location.href = url;
+};
 
 /**
  * Returns the event handlers for the buttons on the page
@@ -39,7 +42,7 @@ const get_event_handlers = (controller, rerender) => {
         submit_click_evt: () => {
             const json = controller.to_json();
             const json_str = JSON.stringify(json);
-            console.log(json);
+            // console.log(json);
             fetch("/api/run", {
                 method: "POST",
                 headers: {
@@ -52,7 +55,7 @@ const get_event_handlers = (controller, rerender) => {
                 // Store state trace in session storage
                 sessionStorage.setItem("state_trace", JSON.stringify(data));
                 // redirect to visualizer page
-                window.location.href = "../visualizer/visualizer.html";
+                redirect_to("../visualizer/visualizer.html");
             });
         },
 
@@ -183,4 +186,4 @@ const init = () => {
     return { controller, workspace }    // for testing
 };
 
-export { add_event_listeners, get_enabled_directions, init };
+export { redirect_to, add_event_listeners, get_enabled_directions, init };

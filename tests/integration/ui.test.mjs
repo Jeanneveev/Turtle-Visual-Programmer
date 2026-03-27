@@ -2,9 +2,18 @@
  * @jest-environment jsdom
  */
 
-import { test, expect, describe, jest } from "@jest/globals";
+import { test, expect, describe, jest, beforeAll, afterAll } from "@jest/globals";
 const { VALID_COMBOS } = await import("../../src/frontend/builder/palette/palette.js");
-const { init, get_enabled_directions } = await import("../../src/frontend/builder/main.js");
+const { init, get_enabled_directions, redirect_to } = await import("../../src/frontend/main.js");
+
+const real_location = window.location;
+beforeAll(() => {
+    delete window.location;
+    window.location = { ...real_location, assign: jest.fn(), href: "" };
+});
+afterAll(() => {
+    window.location = real_location;
+});
 
 const example_dom = `
     <button data-type="move" id="type_ex"></button>
@@ -17,7 +26,8 @@ const example_dom = `
     <button id="add"></button>
     <button id="delete"></button>
     <button id="submit"></button>
-`
+`;
+
 describe("Click events", () => {
     test("Clicking type button updates current slot", () => {
         // Setup fake dom
@@ -149,30 +159,15 @@ describe("Click events", () => {
         expect(workspace.textContent).not.toContain("up");
     });
 
-    // test("Clicking submit logs JSON", () => {
-    //     document.body.innerHTML = example_dom;
-    //     const spy = jest.spyOn(console, "log");
-    //     const submit_btn = document.getElementById("submit");
-    //     const type_btn = document.getElementById("type_ex");
-    //     const direction_btn = document.getElementById("dir_ex");
-
-    //     init();
-
-    //     type_btn.click();
-    //     direction_btn.click();
-    //     submit_btn.click();
-
-    //     expect(spy).toHaveBeenCalledWith([
-    //         { "type": "move", "direction": "up" }
-    //     ]);
-    // });
-
     test("Clicking sumbit sends correct JSON to backend", () => {
         document.body.innerHTML = example_dom;
         global.fetch = jest.fn();
         const fetch_mock = jest.spyOn(global, "fetch").mockResolvedValue({
             json: () => Promise.resolve({ trace: "fake trace" })
         });
+        // mock redirect_to to prevent actual redirection during test
+        const mock_redirect = jest.spyOn({ redirect_to }, "redirect_to").mockImplementation(() => {});
+        
         const submit_btn = document.getElementById("submit");
         const type_btn = document.getElementById("type_ex");
         const direction_btn = document.getElementById("dir_ex");
@@ -184,10 +179,12 @@ describe("Click events", () => {
         submit_btn.click();
 
         expect(fetch_mock).toHaveBeenCalledWith("/api/run", {
-            body: [{"direction": "up", "type": "move"}],
+            body: JSON.stringify([{"type": "move", "direction": "up"}]),
             headers: { "Content-Type": "application/json" },
             method: "POST",
         });
+
+        mock_redirect.mockRestore();
     });
 });
 

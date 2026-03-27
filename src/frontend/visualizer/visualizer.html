@@ -7,9 +7,18 @@
         <link rel='stylesheet' href='visualizer.css' />
     </head>
     <body>
+        <button id="back" class="back">Back</button>
         <div class="canvas_container">
             <canvas id="canvas" class="canvas" width="400" height="400"></canvas>
         </div>
-        <script type="module" src="visualizer.js"></script>
+        <div class="nav_container">
+            <button id="redo" class="redo">Redo</button>
+            <button id="step_back" class="step_back">Step Back</button>
+            <button id="step_forward" class="step_forward">Step Forward</button>
+        </div>
+        <script type="module">
+            import { init } from "./visualizer.js";
+            init();
+        </script>
     </body>
 </html>
