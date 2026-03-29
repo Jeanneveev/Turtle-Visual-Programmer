@@ -1,3 +1,5 @@
+import { create_animation_controller } from "./animation_controller.js";
+
 /**
  * Translates a direction string ("up", "right", "down", "left") to an angle in radians
  * @param {String} dir 
@@ -111,48 +113,28 @@ const draw_state = (ctx, state) => {
     ctx.restore();  // restore the initial save
 };
 
-/**
- * Draws each state in the given trace, forming an animation
- * @param {Array<Object>} state_trace 
- */
-const animate = async (state_trace) => {
-    console.log("Animate called with:", state_trace);
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-
-    for (const state of state_trace) {
-        console.log("Animating:", state);
-        draw_state(ctx, state);
-        await new Promise(resolve => setTimeout(resolve, 500));  // wait 500ms between states
+const get_state_trace = () => {
+    const state_trace_str = sessionStorage.getItem("state_trace");
+    if (state_trace_str) {
+        return JSON.parse(state_trace_str);
+    } else {
+        return null;
     }
 };
 
-/**
- * Loads the state trace and calls for its animation
- */
-const load_animation = () => {
-    const state_trace_str = sessionStorage.getItem("state_trace");
-    if (state_trace_str) {
-        const state_trace = JSON.parse(state_trace_str);
-        animate(state_trace);
-    } else {
-        console.error("No state trace found in session storage");
-    }
-}
-
-const get_event_handlers = () => {
+const get_event_handlers = (controller) => {
     return {
         back_click_evt: () => {
             window.location.href = "../index.html";
         },
-        redo_click_evt: () => {
-            load_animation();
+        redo_click_evt: async () => {
+            await controller.replay();
         },
         step_back_click_evt: () => {
-            // TODO: Implement step back button
+            controller.step_back();
         },
         step_forward_click_evt: () => {
-            // TODO: Implement step forward button
+            controller.step_forward();
         }
     }
 }
@@ -167,7 +149,19 @@ const add_event_listeners = (dom, handlers) => {
  * Initializes the visualizer
  * Sets up event listeners and calls for the animation to be loaded and played
  */
-const init = () => {
+const init = async () => {
+    // Get state trace and animation controller
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const state_trace = get_state_trace();
+    console.log("Gotten state trace:", state_trace);
+    if (!state_trace) {
+        console.error("No state trace found in session storage");
+    }
+
+    const controller = create_animation_controller(ctx, state_trace, draw_state);
+    await controller.reset();
+
     // Setup event listeners
     const dom = {
         canvas: document.getElementById("canvas"),
@@ -176,14 +170,14 @@ const init = () => {
         step_back_button: document.getElementById("step_back"),
         step_forward_button: document.getElementById("step_forward")
     };
-    const handlers = get_event_handlers();
+    const handlers = get_event_handlers(controller);
     add_event_listeners(dom, handlers);
 
-    // Get state trace from session storage and animate
-    load_animation();
+    // Start animation
+    controller.play();
 };
 
 export {
-    init, animate, translate_direction, reset_origin, get_pixel_x, get_pixel_y,
+    init, translate_direction, reset_origin, get_pixel_x, get_pixel_y,
     get_turtle_position, get_turtle_points, draw_turtle, draw_state
 };

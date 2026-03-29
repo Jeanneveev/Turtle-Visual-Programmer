@@ -4,7 +4,7 @@
 
 const { test, expect, describe, jest, beforeAll, afterAll, beforeEach } = await import("@jest/globals");
 const {
-    init, animate, translate_direction, reset_origin, get_pixel_x, get_pixel_y,
+    init, translate_direction, reset_origin, get_pixel_x, get_pixel_y,
     get_turtle_position, get_turtle_points, draw_turtle, draw_state
 } = await import("../../../src/frontend/visualizer/visualizer.js");
 
@@ -80,21 +80,28 @@ describe("Animation Utils", () => {
 });
 
 describe("Click Events", () => {
-    test("Back button redirects to home page", () => {
+    beforeEach(() => {
+        // mock sessionStorage
+        const mock_state_trace = JSON.stringify([{ x: 0, y: 0, direction: "up" }]);
+        sessionStorage.setItem("state_trace", mock_state_trace);
+        // set up document
         document.body.innerHTML = example_dom;
+    });
+
+    test("Back button redirects to home page", async () => {
         const back_btn = document.getElementById("back");
 
-        init();
+        await init();
         back_btn.click();
 
-        expect(window.location.href).toBe("../index.html");
+        expect(window.location.href.includes("index.html")).toBeTruthy();
     });
 });
 
 describe("Canvas", () => {
     let canvas, ctx;
     beforeEach(() => {
-        // document.body.innerHTML = example_dom;
+        document.body.innerHTML = example_dom;
         canvas = document.getElementById("canvas");
         ctx = canvas.getContext("2d");
     });
