@@ -21,16 +21,16 @@ const GRID_SIZE = 20;  // 20x20 grid
 const TRIANGLE_SIZE = 20;
 
 // Padding to prevent clipping (triangle extends ~10 right/up)
-const PADDING_LEFT = TRIANGLE_SIZE / 2 + 10;  // 20
-const PADDING_RIGHT = TRIANGLE_SIZE / 2 + 10;  // 20
+const PADDING_LEFT = TRIANGLE_SIZE / 2 + 10;    // 20
+const PADDING_RIGHT = TRIANGLE_SIZE / 2 + 10;   // 20
 const PADDING_BOTTOM = TRIANGLE_SIZE / 2 + 10;  // 20
 const PADDING_TOP = TRIANGLE_SIZE + 10;  // 30 (triangle tip extends 20 up)
 
 // Effective drawing bounds
-const MIN_X = PADDING_LEFT;
-const MAX_X = CANVAS_WIDTH - PADDING_RIGHT;
-const MIN_Y = PADDING_BOTTOM;
-const MAX_Y = CANVAS_HEIGHT - PADDING_TOP;
+const MIN_X = PADDING_LEFT;                 // 20
+const MAX_X = CANVAS_WIDTH - PADDING_RIGHT; // 380
+const MIN_Y = PADDING_BOTTOM;               // 20
+const MAX_Y = CANVAS_HEIGHT - PADDING_TOP;  // 370
 
 /**
  * Resets the canvas origin to the bottom-left corner
@@ -183,4 +183,7 @@ const init = () => {
     load_animation();
 };
 
-export { init, animate, translate_direction, draw_state };
+export {
+    init, animate, translate_direction, reset_origin, get_pixel_x, get_pixel_y,
+    get_turtle_position, get_turtle_points, draw_turtle, draw_state
+};
