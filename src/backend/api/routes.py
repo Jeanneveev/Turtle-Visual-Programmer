@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
-from src.core.context.context import init_context
-from src.core.parser.parser import json_to_instructions
-from src.core.runner.runner import Runner
+from src.backend.context.context import init_context
+from src.backend.parser.parser import json_to_instructions
+from src.backend.runner.runner import Runner
 
 api = Blueprint("api", __name__, url_prefix="/api")
 

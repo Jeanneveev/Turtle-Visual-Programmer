@@ -1,7 +1,7 @@
 import pytest
 from flask import Flask
 from flask.testing import FlaskClient   # for type hints
-from src.core.api.routes import api
+from src.backend.api.routes import api
 
 @pytest.fixture
 def client():

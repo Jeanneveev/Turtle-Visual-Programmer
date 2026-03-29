@@ -1,7 +1,7 @@
 import os
 from flask import Flask, send_from_directory
 from flask_cors import CORS
-from src.core.api.routes import api
+from src.backend.api.routes import api
 
 def create_app():
     # absolute folder path to frontend folder

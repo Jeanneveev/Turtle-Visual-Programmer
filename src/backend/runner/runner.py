@@ -1,7 +1,7 @@
 from typing import Generator
-from src.core.action.action import IAction
-from src.core.context.context import IContext
-from src.core.utils.utils import State
+from src.backend.action.action import IAction
+from src.backend.context.context import IContext
+from src.backend.utils.utils import State
 
 class Runner:
     def __init__(self, context:IContext):

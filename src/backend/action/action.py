@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from src.core.context.context import IContext
-from src.core.utils.utils import Direction, State
+from src.backend.context.context import IContext
+from src.backend.utils.utils import Direction, State
 
 @dataclass(frozen=True)
 class IAction(ABC):

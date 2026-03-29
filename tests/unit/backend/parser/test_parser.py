@@ -1,8 +1,8 @@
 import unittest
 import json
 import os
-from src.core.instruction.instruction import BlockInstruction, MoveInstruction, RotateInstruction
-from src.core.parser.parser import json_path_to_instructions, validate_json, json_to_instructions
+from src.backend.instruction.instruction import BlockInstruction, MoveInstruction, RotateInstruction
+from src.backend.parser.parser import json_path_to_instructions, validate_json, json_to_instructions
 
 example_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "example.json")
 bad_example_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "example_bad.json")

@@ -1,7 +1,7 @@
 import unittest
-from src.core.action.action import IAction, Move, Rotate
-from src.core.context.context import init_context
-from src.core.utils.utils import Direction
+from src.backend.action.action import IAction, Move, Rotate
+from src.backend.context.context import init_context
+from src.backend.utils.utils import Direction
 
 # HELPERS
 class MockAction(IAction):

@@ -1,8 +1,8 @@
 import unittest
-from src.core.action.action import Move, Rotate
-from src.core.context.context import init_context
-from src.core.runner.runner import Runner
-from src.core.utils.utils import Direction, State
+from src.backend.action.action import Move, Rotate
+from src.backend.context.context import init_context
+from src.backend.runner.runner import Runner
+from src.backend.utils.utils import Direction, State
 
 class TestRunner(unittest.TestCase):
     def test_can_create_runner(self):

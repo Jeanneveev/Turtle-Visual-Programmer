@@ -1,6 +1,6 @@
 import json
 from jsonschema import validate
-from src.core.instruction.instruction import BlockInstruction, MoveInstruction, RotateInstruction
+from src.backend.instruction.instruction import BlockInstruction, MoveInstruction, RotateInstruction
 
 
 def validate_json(loaded_json:list[dict]):
