@@ -9,5 +9,5 @@ You'll need:
 1. Navigate to the root folder of the project
 2. Download the backend requirements with `pip install -r requirements.txt`
 3. Download the frontend requirements with `npm install`
-4. Run the server by running the `src/backend/api/app.py` file
-5. You can now view the sie in your browser on the page "http://127.0.0.1:5000/"
+4. Run the server by running `python -m src.backend.app`
+5. You can now view the site in your browser on the page "http://127.0.0.1:5000/"

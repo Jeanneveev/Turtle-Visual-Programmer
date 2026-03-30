@@ -30,6 +30,7 @@ const create_animation_controller = (ctx, state_trace, draw_state) => {
         }
     };
 
+    // NOTE: Does not play first frame, that's handled by .reset()
     const play = () => {
         if (is_playing) return;
 

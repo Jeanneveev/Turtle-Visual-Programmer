@@ -36,9 +36,14 @@ main {
     display: flex;
     flex-direction: row;
     gap: .5rem;
+}
 
-    button {
-        padding-inline: .5rem;
-        padding-block: .25rem;
-    }
+.nav_container button,
+.play_pause_container button {
+    padding-inline: .5rem;
+    padding-block: .25rem;
+}
+
+.play_pause_container {
+    align-self: flex-end;
 }

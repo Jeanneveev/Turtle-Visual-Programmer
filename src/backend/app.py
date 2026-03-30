@@ -5,9 +5,8 @@ from src.backend.api.routes import api
 
 def create_app():
     # absolute folder path to frontend folder
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
     frontend_dir = os.path.join(base_dir, "src", "frontend")
-    builder_dir = os.path.join(frontend_dir, "builder")
 
     app = Flask(
         __name__,
