@@ -1,4 +1,4 @@
-import { Workspace, WorkspaceController, VALID_COMBOS } from "./builder/palette/palette.js";
+import { Workspace, WorkspaceController, VALID_COMBOS } from "./builder/model/model.js";
 import { workspace_view_model } from "./builder/view_model/view_model.js";
 
 const redirect_to = (url) => {

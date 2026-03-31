@@ -21,6 +21,8 @@ const example_dom = `
     <button id="redo"></button>
     <button id="step_back"></button>
     <button id="step_forward"></button>
+    <button id="play"></button>
+    <button id="pause"></button>
 `;
 
 describe("Click Events", () => {

@@ -1,5 +1,5 @@
 import { test, expect, describe } from "@jest/globals";
-import { InstructionSlot, Instruction, Workspace, WorkspaceController } from "../../../../src/frontend/builder/palette/palette.js";
+import { InstructionSlot, Instruction, Workspace, WorkspaceController } from "../../../../src/frontend/builder/model/model.js";
 
 describe("InstructionSlot", () => {
     test("Can create InstructionSlot", () => {

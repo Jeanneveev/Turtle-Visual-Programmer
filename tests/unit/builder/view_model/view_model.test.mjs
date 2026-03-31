@@ -1,5 +1,5 @@
 import { test, expect, describe } from "@jest/globals";
-const { Workspace } = await import("../../../../src/frontend/builder/palette/palette.js");
+const { Workspace } = await import("../../../../src/frontend/builder/model/model.js");
 const { workspace_view_model } = await import("../../../../src/frontend/builder/view_model/view_model.js")
 
 describe("View Model", () => {

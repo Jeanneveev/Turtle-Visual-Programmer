@@ -3,7 +3,7 @@
  */
 
 import { test, expect, describe, jest, beforeAll, afterAll } from "@jest/globals";
-const { VALID_COMBOS } = await import("../../src/frontend/builder/palette/palette.js");
+const { VALID_COMBOS } = await import("../../src/frontend/builder/model/model.js");
 const { init, get_enabled_directions, redirect_to } = await import("../../src/frontend/main.js");
 
 const real_location = window.location;
